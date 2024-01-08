@@ -15,16 +15,14 @@ Add EpubChecker as a dependency in your Swift package:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/your-username/EpubChecker.git", from: "1.0.0")
+    .package(url: "https://github.com/lucaArchidiacono/EpubChecker.git", from: "1.0.0")
 ]
 ```
 
 ### Example Usage
 ```swift
-import Foundation
-
 // Import EpubChecker module
-import EpubChecker
+import epubchecker
 
 // Create an instance of EpubCheck
 let epubCheck = EpubCheck(fileURL: yourEPUBFileURL)
