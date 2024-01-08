@@ -1,7 +1,7 @@
 import Foundation
 
 enum DateConversionError: Error {
-	case invalidDateFormat(expected: String, received: String)
+	case invalidDateFormat(expected: [String], received: String)
 }
 
 // MARK: - EpubInspector
@@ -56,7 +56,7 @@ struct Checker: Codable {
 // MARK: - Item
 struct Item: Codable {
 	let id, fileName: String
-	let mediaType: MediaType?
+	let mediaType: String?
 	let compressedSize, uncompressedSize: Int
 	let compressionMethod: CompressionMethod
 	let checkSum: String
@@ -78,12 +78,6 @@ struct Item: Codable {
 enum CompressionMethod: String, Codable {
 	case deflated = "Deflated"
 	case stored = "Stored"
-}
-
-enum MediaType: String, Codable {
-	case applicationXHTMLXML = "application/xhtml+xml"
-	case imageJPEG = "image/jpeg"
-	case textCSS = "text/css"
 }
 
 // MARK: - Publication
@@ -112,15 +106,28 @@ struct Publication: Codable {
 		self.creator = try container.decode([String].self, forKey: .creator)
 		
 		let dateString = try container.decode(String.self, forKey: .date)
-		let dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
 		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = dateFormat
+		let dateFormats = [
+			"yyyy-dd-MM'T'HH:mm:ssZ",
+			"yyyy-MM-dd'T'HH:mm:ssZ"
+		]
 
-		if let date = dateFormatter.date(from: dateString) {
-			self.date = date
-		} else {
-			throw DateConversionError.invalidDateFormat(expected: dateFormat, received: dateString)
+		var validatedDate: Date? = nil
+		for dateFormat in dateFormats {
+			dateFormatter.dateFormat = dateFormat
+
+			if let date = dateFormatter.date(from: dateString) {
+				validatedDate = date
+				break
+			}
 		}
+
+		guard let validatedDate else {
+			throw DateConversionError.invalidDateFormat(expected: dateFormats, received: dateString)
+		}
+
+		self.date = validatedDate
+
 		self.subject = try container.decode([String].self, forKey: .subject)
 		self.description = try container.decode(String.self, forKey: .description)
 		self.rights = try container.decodeIfPresent(String.self, forKey: .rights)
