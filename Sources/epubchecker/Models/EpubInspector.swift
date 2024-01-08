@@ -6,18 +6,51 @@ enum DateConversionError: Error {
 
 // MARK: - EpubInspector
 struct EpubInspector: Codable {
-	let messages: [String]
+	let messages: [Message]
 	let customMessageFileName: String?
 	let checker: Checker
 	let publication: Publication
 	let items: [Item]
 }
 
+// MARK: - Message
+struct Message: Codable {
+	let id: String
+	let severity: Severity
+	let message: String
+	let additionalLocations: Int
+	let locations: [Location]
+	let suggestion: String?
+
+	enum CodingKeys: String, CodingKey {
+		case id = "ID"
+		case severity, message, suggestion, additionalLocations, locations
+	}
+}
+
+// MARK: - Severity
+enum Severity: String, Codable {
+	case SUPPRESSED
+	case USAGE
+	case INFO
+	case WARNING
+	case ERROR
+	case FATAL
+}
+
+// MARK: - Location
+struct Location: Codable {
+	let path: String
+	let line: Int
+	let column: Int
+	let context: String?
+}
+
 // MARK: - Checker
 struct Checker: Codable {
 	let path, filename, checkerVersion, checkDate: String
-	let elapsedTime, nFatal, nError, nWarning: Int
-	let nUsage: Int
+	let elapsedTime: Int
+	let nFatal, nError, nWarning, nUsage: Int
 }
 
 // MARK: - Item

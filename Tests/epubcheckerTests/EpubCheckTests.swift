@@ -1,5 +1,5 @@
 import XCTest
-@testable import lib
+@testable import epubchecker
 
 final class epubcheckerTests: XCTestCase {
 
@@ -8,7 +8,7 @@ final class epubcheckerTests: XCTestCase {
 		print(testBook)
 
 		let epubCheck = EpubCheck(testBook)
-		let result = try await epubCheck.validate(output: .json)
+		let result = try await epubCheck.validate(output: .xml)
 		print(result)
 	}
 

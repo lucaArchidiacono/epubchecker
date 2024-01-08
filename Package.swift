@@ -15,7 +15,7 @@ let package = Package(
 //			targets: ["cli"]),
 		.library(
 			name: "epubchecker",
-			targets: ["lib"]),
+			targets: ["epubchecker"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,15 +28,15 @@ let package = Package(
 //			]
 //		),
 		.target(
-			name: "lib",
+			name: "epubchecker",
 			dependencies: [],
 			resources: [
 				.copy("Resources/epubcheck"),
 			]
 		),
         .testTarget(
-            name: "libTests",
-            dependencies: ["lib"],
+            name: "epubcheckerTests",
+            dependencies: ["epubchecker"],
 			resources: [
 				.process("Resources")
 			]
