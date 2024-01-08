@@ -83,7 +83,9 @@ struct EpubCheck {
 		process.waitUntilExit()
 
 		if !error.isEmpty {
-			logger.error("\(error)")
+			logger.error("🚫 \(error)!")
+		} else {
+			logger.info("✅ Check finished successfully!")
 		}
 
 		let epubInspector = try JSONDecoder().decode(EpubInspector.self, from: result.data(using: .utf8)!)
@@ -108,7 +110,9 @@ struct EpubCheck {
 		process.waitUntilExit()
 
 		if !error.isEmpty {
-			logger.error("\(error)")
+			logger.error("🚫 \(error)!")
+		} else {
+			logger.info("✅ Check finished successfully!")
 		}
 
 		return result
@@ -148,7 +152,9 @@ struct EpubCheck {
 		process.waitUntilExit()
 
 		if !error.isEmpty {
-			logger.error("\(error)")
+			logger.error("🚫 \(error)!")
+		} else {
+			logger.info("✅ Check finished successfully!")
 		}
 
 		do {
@@ -193,7 +199,9 @@ struct EpubCheck {
 		process.waitUntilExit()
 
 		if !error.isEmpty {
-			logger.error("\(error)")
+			logger.error("🚫 \(error)!")
+		} else {
+			logger.info("✅ Check finished successfully!")
 		}
 
 		completion(.success(result))
